@@ -24,6 +24,7 @@ public class EnvironmentVariableConfigFilter extends AbstractConfigFilter {
 
   @Override
   public String filter(String key) {
+    //从环境变量中获取配置
     return System.getenv(key);
   }
 

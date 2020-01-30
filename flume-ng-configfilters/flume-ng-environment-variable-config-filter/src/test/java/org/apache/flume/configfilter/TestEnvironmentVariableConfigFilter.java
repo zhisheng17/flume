@@ -32,8 +32,7 @@ public class TestEnvironmentVariableConfigFilter {
   public static final String FILTERED = "filtered";
   public static final String FILTERED_2 = "filtered2";
   @Rule
-  public final EnvironmentVariables environmentVariables
-      = new EnvironmentVariables();
+  public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
   @Test
   public void filter() {

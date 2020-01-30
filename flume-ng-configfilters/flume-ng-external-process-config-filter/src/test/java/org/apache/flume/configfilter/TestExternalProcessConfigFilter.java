@@ -44,6 +44,7 @@ public class TestExternalProcessConfigFilter {
   public void filterOk() {
     String file = Thread.currentThread().getContextClassLoader()
         .getResource("test.sh").getFile();
+    System.out.println(file);
 
     File testExecutable = new File(file);
     testExecutable.setExecutable(true);

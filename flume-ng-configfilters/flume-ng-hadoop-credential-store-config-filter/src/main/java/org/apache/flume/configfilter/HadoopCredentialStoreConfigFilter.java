@@ -25,18 +25,14 @@ import org.slf4j.LoggerFactory;
 
 public class HadoopCredentialStoreConfigFilter extends AbstractConfigFilter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-      HadoopCredentialStoreConfigFilter.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(HadoopCredentialStoreConfigFilter.class);
 
-  static final String PASSWORD_FILE_CONFIG_KEY
-      = "credstore.java-keystore-provider.password-file";
-  static final String CREDENTIAL_PROVIDER_PATH
-      = "credential.provider.path";
+  static final String PASSWORD_FILE_CONFIG_KEY = "credstore.java-keystore-provider.password-file";
+  static final String CREDENTIAL_PROVIDER_PATH = "credential.provider.path";
   static final String HADOOP_SECURITY = "hadoop.security.";
   private Configuration hadoopConfiguration;
 
   public void initializeWithConfiguration(Map<String, String> configuration) {
-
     LOGGER.debug("Initializing hadoop credential store.");
     hadoopConfiguration = new Configuration();
     hadoopConfiguration.set(
@@ -72,6 +68,4 @@ public class HadoopCredentialStoreConfigFilter extends AbstractConfigFilter {
 
     return result == null ? null : new String(result);
   }
-
-
 }

@@ -28,6 +28,8 @@ import java.util.Map;
 public interface ConfigFilter {
 
   /**
+   * todo: 这个 filter 方法名取得不太好，它的作用就是获取指定 key 对应的配置值
+   *
    * Filter method that returns the value associated with the given key
    *
    * @param key the key to look up in the concrete implementations

@@ -31,79 +31,79 @@ import java.util.Scanner;
 
 public class ExternalProcessConfigFilter extends AbstractConfigFilter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ExternalProcessConfigFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExternalProcessConfigFilter.class);
 
-  private static final String COMMAND_KEY = "command";
-  private static final String CHARSET_KEY = "charset";
-  private static final String CHARSET_DEFAULT = "UTF-8";
+    private static final String COMMAND_KEY = "command";
+    private static final String CHARSET_KEY = "charset";
+    private static final String CHARSET_DEFAULT = "UTF-8";
 
-  Charset charset;
-  private String command;
+    private Charset charset;
+    private String command;
 
-  @Override
-  public String filter(String key) {
-    try {
-      return execCommand(key);
-    } catch (InterruptedException | IllegalStateException | IOException ex) {
-      LOGGER.error("Error while reading value for key {}: ", key, ex);
-    }
-    return null;
-  }
-
-  @Override
-  public void initializeWithConfiguration(Map<String, String> configuration) {
-    String charsetName = configuration.getOrDefault(CHARSET_KEY, CHARSET_DEFAULT);
-    try {
-      charset = Charset.forName(charsetName);
-    } catch (UnsupportedCharsetException ex) {
-      throw new RuntimeException("Unsupported charset: " + charsetName, ex);
-    }
-
-    command = configuration.get(COMMAND_KEY);
-    if (command == null) {
-      throw new IllegalArgumentException(COMMAND_KEY + " must be set for " +
-          "ExternalProcessConfigFilter");
-    }
-
-  }
-
-  private String execCommand(String key) throws IOException, InterruptedException {
-    String[] split = command.split("\\s+");
-    int newLength = split.length + 1;
-    String[] commandParts = Arrays.copyOf(split, newLength);
-    commandParts[newLength - 1] = key;
-    Process p = Runtime.getRuntime().exec(commandParts);
-    p.waitFor();
-    if (p.exitValue() != 0) {
-      String stderr;
-      try {
-        stderr = getResultFromStream(p.getErrorStream());
-      } catch (Throwable t) {
-        stderr = null;
-      }
-      throw new IllegalStateException(
-          String.format("Process (%s) exited with non-zero (%s) status code. Sterr: %s",
-              this.command, p.exitValue(), stderr));
-    }
-
-
-    return getResultFromStream(p.getInputStream());
-  }
-
-  private String getResultFromStream(InputStream inputStream) {
-    try (Scanner scanner = new Scanner(inputStream, charset.name())) {
-      String result = null;
-      if (scanner.hasNextLine()) {
-        result = scanner.nextLine();
-        if (scanner.hasNextLine()) {
-          LOGGER.warn("External process has more than one line of output. " +
-              "Only the first line is used.");
+    @Override
+    public String filter(String key) {
+        try {
+            return execCommand(key);
+        } catch (InterruptedException | IllegalStateException | IOException ex) {
+            LOGGER.error("Error while reading value for key {}: ", key, ex);
         }
-      } else {
-        LOGGER.warn("External process has not produced any output.");
-      }
-
-      return result;
+        return null;
     }
-  }
+
+    @Override
+    public void initializeWithConfiguration(Map<String, String> configuration) {
+        String charsetName = configuration.getOrDefault(CHARSET_KEY, CHARSET_DEFAULT);
+        try {
+            charset = Charset.forName(charsetName);
+        } catch (UnsupportedCharsetException ex) {
+            throw new RuntimeException("Unsupported charset: " + charsetName, ex);
+        }
+
+        command = configuration.get(COMMAND_KEY);
+        if (command == null) {
+            throw new IllegalArgumentException(COMMAND_KEY + " must be set for " +
+                    "ExternalProcessConfigFilter");
+        }
+
+    }
+
+    private String execCommand(String key) throws IOException, InterruptedException {
+        String[] split = command.split("\\s+");
+        int newLength = split.length + 1;
+        String[] commandParts = Arrays.copyOf(split, newLength);
+        commandParts[newLength - 1] = key;
+        Process p = Runtime.getRuntime().exec(commandParts);
+        p.waitFor();
+        if (p.exitValue() != 0) {
+            String stderr;
+            try {
+                stderr = getResultFromStream(p.getErrorStream());
+            } catch (Throwable t) {
+                stderr = null;
+            }
+            throw new IllegalStateException(
+                    String.format("Process (%s) exited with non-zero (%s) status code. Sterr: %s",
+                            this.command, p.exitValue(), stderr));
+        }
+
+
+        return getResultFromStream(p.getInputStream());
+    }
+
+    private String getResultFromStream(InputStream inputStream) {
+        try (Scanner scanner = new Scanner(inputStream, charset.name())) {
+            String result = null;
+            if (scanner.hasNextLine()) {
+                result = scanner.nextLine();
+                if (scanner.hasNextLine()) {
+                    LOGGER.warn("External process has more than one line of output. " +
+                            "Only the first line is used.");
+                }
+            } else {
+                LOGGER.warn("External process has not produced any output.");
+            }
+
+            return result;
+        }
+    }
 }

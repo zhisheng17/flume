@@ -45,8 +45,7 @@ public class TestHadoopCredentialStoreConfigFilter {
   private static String providerPathPwdFile;
 
   @ClassRule
-  public static final EnvironmentVariables environmentVariables
-      = new EnvironmentVariables();
+  public static final EnvironmentVariables environmentVariables = new EnvironmentVariables();
   private static File fileDefault;
   private static File fileEnvPassword;
   private static File fileFilePassword;
@@ -59,6 +58,7 @@ public class TestHadoopCredentialStoreConfigFilter {
     fillCredStoreWithPasswordFile();
     fillCredStoreWithEnvironmentVariablePassword();
   }
+
   @AfterClass
   public static void tearDown() {
     fileDefault.deleteOnExit();
@@ -178,6 +178,4 @@ public class TestHadoopCredentialStoreConfigFilter {
   private static void runCommand(String c, Configuration conf) throws Exception {
     ToolRunner.run(conf, new CredentialShell(), c.split(" "));
   }
-
-
 }
