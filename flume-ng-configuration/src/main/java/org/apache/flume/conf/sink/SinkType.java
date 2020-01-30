@@ -25,118 +25,119 @@ import org.apache.flume.conf.ComponentWithClassName;
  */
 public enum SinkType implements ComponentWithClassName {
 
-  /**
-   * Place holder for custom sinks not part of this enumeration.
-   */
-  OTHER(null),
+    /**
+     * Place holder for custom sinks not part of this enumeration.
+     */
+    OTHER(null),
 
-  /**
-   * Null sink
-   *
-   * @see NullSink
-   */
-  NULL("org.apache.flume.sink.NullSink"),
+    /**
+     * Null sink
+     *
+     * @see NullSink
+     */
+    NULL("org.apache.flume.sink.NullSink"),
 
-  /**
-   * Logger sink
-   *
-   * @see LoggerSink
-   */
-  LOGGER("org.apache.flume.sink.LoggerSink"),
+    /**
+     * Logger sink
+     *
+     * @see LoggerSink
+     */
+    LOGGER("org.apache.flume.sink.LoggerSink"),
 
-  /**
-   * Rolling file sink
-   *
-   * @see RollingFileSink
-   */
-  FILE_ROLL("org.apache.flume.sink.RollingFileSink"),
+    /**
+     * Rolling file sink
+     *
+     * @see RollingFileSink
+     */
+    FILE_ROLL("org.apache.flume.sink.RollingFileSink"),
 
-  /**
-   * HDFS Sink provided by org.apache.flume.sink.hdfs.HDFSEventSink
-   */
-  HDFS("org.apache.flume.sink.hdfs.HDFSEventSink"),
+    /**
+     * HDFS Sink provided by org.apache.flume.sink.hdfs.HDFSEventSink
+     */
+    HDFS("org.apache.flume.sink.hdfs.HDFSEventSink"),
 
-  /**
-   * IRC Sink provided by org.apache.flume.sink.irc.IRCSink
-   */
-  IRC("org.apache.flume.sink.irc.IRCSink"),
+    /**
+     * IRC Sink provided by org.apache.flume.sink.irc.IRCSink
+     */
+    IRC("org.apache.flume.sink.irc.IRCSink"),
 
-  /**
-   * Avro sink
-   *
-   * @see AvroSink
-   */
-  AVRO("org.apache.flume.sink.AvroSink"),
+    /**
+     * Avro sink
+     *
+     * @see AvroSink
+     */
+    AVRO("org.apache.flume.sink.AvroSink"),
 
-  /**
-   * Thrift sink
-   *
-   * @see ThriftSink
-   */
-  THRIFT("org.apache.flume.sink.ThriftSink"),
+    /**
+     * Thrift sink
+     *
+     * @see ThriftSink
+     */
+    THRIFT("org.apache.flume.sink.ThriftSink"),
 
-  /**
-   * ElasticSearch sink
-   *
-   * @see org.apache.flume.sink.elasticsearch.ElasticSearchSink
-   */
-  ELASTICSEARCH("org.apache.flume.sink.elasticsearch.ElasticSearchSink"),
+    /**
+     * ElasticSearch sink
+     *
+     * @see org.apache.flume.sink.elasticsearch.ElasticSearchSink
+     */
+    ELASTICSEARCH("org.apache.flume.sink.elasticsearch.ElasticSearchSink"),
 
-  /**
-   * HBase sink
-   *
-   * @see org.apache.flume.sink.hbase.HBaseSink
-   */
-  HBASE("org.apache.flume.sink.hbase.HBaseSink"),
+    /**
+     * HBase sink
+     *
+     * @see org.apache.flume.sink.hbase.HBaseSink
+     */
+    HBASE("org.apache.flume.sink.hbase.HBaseSink"),
 
-  /**
-   * AsyncHBase sink
-   *
-   * @see org.apache.flume.sink.hbase.AsyncHBaseSink
-   */
-  ASYNCHBASE("org.apache.flume.sink.hbase.AsyncHBaseSink"),
+    /**
+     * AsyncHBase sink
+     *
+     * @see org.apache.flume.sink.hbase.AsyncHBaseSink
+     */
+    ASYNCHBASE("org.apache.flume.sink.hbase.AsyncHBaseSink"),
 
-  /**
-   * HBase2 sink
-   *
-   * @see org.apache.flume.sink.hbase2.HBase2Sink
-   */
-  HBASE2("org.apache.flume.sink.hbase2.HBase2Sink"),
+    /**
+     * HBase2 sink
+     *
+     * @see org.apache.flume.sink.hbase2.HBase2Sink
+     */
+    HBASE2("org.apache.flume.sink.hbase2.HBase2Sink"),
 
-  /**
-   * MorphlineSolr sink
-   *
-   * @see org.apache.flume.sink.solr.morphline.MorphlineSolrSink
-   */
-  MORPHLINE_SOLR("org.apache.flume.sink.solr.morphline.MorphlineSolrSink"),
+    /**
+     * MorphlineSolr sink
+     *
+     * @see org.apache.flume.sink.solr.morphline.MorphlineSolrSink
+     */
+    MORPHLINE_SOLR("org.apache.flume.sink.solr.morphline.MorphlineSolrSink"),
 
-  /**
-   * Hive Sink
-   * @see org.apache.flume.sink.hive.HiveSink
-   */
-  HIVE("org.apache.flume.sink.hive.HiveSink"),
+    /**
+     * Hive Sink
+     *
+     * @see org.apache.flume.sink.hive.HiveSink
+     */
+    HIVE("org.apache.flume.sink.hive.HiveSink"),
 
-  /**
-   * HTTP Sink
-   *
-   * @see org.apache.flume.sink.http.HttpSink
-   */
-  HTTP("org.apache.flume.sink.http.HttpSink");
+    /**
+     * HTTP Sink
+     *
+     * @see org.apache.flume.sink.http.HttpSink
+     */
+    HTTP("org.apache.flume.sink.http.HttpSink");
 
-  private final String sinkClassName;
+    private final String sinkClassName;
 
-  private SinkType(String sinkClassName) {
-    this.sinkClassName = sinkClassName;
-  }
+    private SinkType(String sinkClassName) {
+        this.sinkClassName = sinkClassName;
+    }
 
-  @Deprecated
-  public String getSinkClassName() {
-    return sinkClassName;
-  }
+    @Deprecated
+    public String getSinkClassName() {
+        return sinkClassName;
+    }
 
 
-  @Override
-  public String getClassName() {
-    return sinkClassName;
-  }
+    @Override
+    public String getClassName() {
+        return sinkClassName;
+    }
 }

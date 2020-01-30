@@ -21,53 +21,52 @@ import org.apache.flume.conf.ConfigurationException;
 
 public class ConfigFilterConfiguration extends ComponentConfiguration {
 
-  public enum ConfigFilterConfigurationType {
-    OTHER(null),
-    ENV("org.apache.flume.conf.configfilter.EnvironmentVariableConfigFilterConfiguration"),
-    HADOOP("org.apache.flume.conf.configfilter.HadoopCredentialStoreConfigFilterConfiguration"),
-    EXTERNAL("org.apache.flume.conf.configfilter.ExternalProcessConfigFilterConfiguration");
+    public enum ConfigFilterConfigurationType {
+        OTHER(null),
+        ENV("org.apache.flume.conf.configfilter.EnvironmentVariableConfigFilterConfiguration"),
+        HADOOP("org.apache.flume.conf.configfilter.HadoopCredentialStoreConfigFilterConfiguration"),
+        EXTERNAL("org.apache.flume.conf.configfilter.ExternalProcessConfigFilterConfiguration");
 
-    private final String configurationName;
+        private final String configurationName;
 
-    ConfigFilterConfigurationType(String type) {
-      configurationName = type;
-    }
-
-    public String getConfigFilterConfigurationType() {
-      return configurationName;
-    }
-
-    @SuppressWarnings("unchecked")
-    public ConfigFilterConfiguration getConfiguration(String name)
-        throws ConfigurationException {
-      if (this == OTHER) {
-        return new ConfigFilterConfiguration(name);
-      }
-      Class<? extends ConfigFilterConfiguration> clazz;
-      ConfigFilterConfiguration instance = null;
-      try {
-        if (configurationName != null) {
-          clazz =
-              (Class<? extends ConfigFilterConfiguration>) Class
-                  .forName(configurationName);
-          instance = clazz.getConstructor(String.class).newInstance(name);
-        } else {
-          return new ConfigFilterConfiguration(name);
+        ConfigFilterConfigurationType(String type) {
+            configurationName = type;
         }
-      } catch (ClassNotFoundException e) {
-        // Could not find the configuration stub, do basic validation
-        instance = new ConfigFilterConfiguration(name);
-        // Let the caller know that this was created because of this exception.
-        instance.setNotFoundConfigClass();
-      } catch (Exception e) {
-        throw new ConfigurationException("Couldn't create configuration", e);
-      }
-      return instance;
-    }
-  }
 
-  protected ConfigFilterConfiguration(String componentName) {
-    super(componentName);
-  }
+        public String getConfigFilterConfigurationType() {
+            return configurationName;
+        }
+
+        @SuppressWarnings("unchecked")
+        public ConfigFilterConfiguration getConfiguration(String name) throws ConfigurationException {
+            if (this == OTHER) {
+                return new ConfigFilterConfiguration(name);
+            }
+            Class<? extends ConfigFilterConfiguration> clazz;
+            ConfigFilterConfiguration instance = null;
+            try {
+                if (configurationName != null) {
+                    clazz =
+                            (Class<? extends ConfigFilterConfiguration>) Class
+                                    .forName(configurationName);
+                    instance = clazz.getConstructor(String.class).newInstance(name);
+                } else {
+                    return new ConfigFilterConfiguration(name);
+                }
+            } catch (ClassNotFoundException e) {
+                // Could not find the configuration stub, do basic validation
+                instance = new ConfigFilterConfiguration(name);
+                // Let the caller know that this was created because of this exception.
+                instance.setNotFoundConfigClass();
+            } catch (Exception e) {
+                throw new ConfigurationException("Couldn't create configuration", e);
+            }
+            return instance;
+        }
+    }
+
+    protected ConfigFilterConfiguration(String componentName) {
+        super(componentName);
+    }
 
 }

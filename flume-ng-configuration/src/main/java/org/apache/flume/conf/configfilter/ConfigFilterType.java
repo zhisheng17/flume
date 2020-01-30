@@ -19,19 +19,19 @@ package org.apache.flume.conf.configfilter;
 import org.apache.flume.conf.ComponentWithClassName;
 
 public enum ConfigFilterType implements ComponentWithClassName {
-  OTHER(null),
-  ENV("org.apache.flume.configfilter.EnvironmentVariableConfigFilter"),
-  HADOOP("org.apache.flume.configfilter.HadoopCredentialStoreConfigFilter"),
-  EXTERNAL("org.apache.flume.configfilter.ExternalProcessConfigFilter");
+    OTHER(null),
+    ENV("org.apache.flume.configfilter.EnvironmentVariableConfigFilter"),
+    HADOOP("org.apache.flume.configfilter.HadoopCredentialStoreConfigFilter"),
+    EXTERNAL("org.apache.flume.configfilter.ExternalProcessConfigFilter");
 
-  private final String className;
+    private final String className;
 
-  ConfigFilterType(String className) {
-    this.className = className;
-  }
+    ConfigFilterType(String className) {
+        this.className = className;
+    }
 
-  @Override
-  public String getClassName() {
-    return className;
-  }
+    @Override
+    public String getClassName() {
+        return className;
+    }
 }

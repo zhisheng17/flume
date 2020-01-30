@@ -21,46 +21,45 @@ package org.apache.flume.conf.sink;
 import org.apache.flume.conf.ComponentWithClassName;
 
 public enum SinkProcessorType implements ComponentWithClassName {
-  /**
-   * Place holder for custom sinks not part of this enumeration.
-   */
-  OTHER(null),
+    /**
+     * Place holder for custom sinks not part of this enumeration.
+     */
+    OTHER(null),
 
-  /**
-   * Failover processor
-   *
-   * @see org.apache.flume.sink.FailoverSinkProcessor
-   */
-  FAILOVER("org.apache.flume.sink.FailoverSinkProcessor"),
+    /**
+     * Failover processor
+     *
+     * @see org.apache.flume.sink.FailoverSinkProcessor
+     */
+    FAILOVER("org.apache.flume.sink.FailoverSinkProcessor"),
 
-  /**
-   * Standard processor
-   *
-   * @see org.apache.flume.sink.DefaultSinkProcessor
-   */
-  DEFAULT("org.apache.flume.sink.DefaultSinkProcessor"),
+    /**
+     * Standard processor
+     *
+     * @see org.apache.flume.sink.DefaultSinkProcessor
+     */
+    DEFAULT("org.apache.flume.sink.DefaultSinkProcessor"),
 
+    /**
+     * Load balancing processor
+     *
+     * @see org.apache.flume.sink.LoadBalancingSinkProcessor
+     */
+    LOAD_BALANCE("org.apache.flume.sink.LoadBalancingSinkProcessor");
 
-  /**
-   * Load balancing processor
-   *
-   * @see org.apache.flume.sink.LoadBalancingSinkProcessor
-   */
-  LOAD_BALANCE("org.apache.flume.sink.LoadBalancingSinkProcessor");
+    private final String processorClassName;
 
-  private final String processorClassName;
+    private SinkProcessorType(String processorClassName) {
+        this.processorClassName = processorClassName;
+    }
 
-  private SinkProcessorType(String processorClassName) {
-    this.processorClassName = processorClassName;
-  }
+    @Deprecated
+    public String getSinkProcessorClassName() {
+        return processorClassName;
+    }
 
-  @Deprecated
-  public String getSinkProcessorClassName() {
-    return processorClassName;
-  }
-
-  @Override
-  public String getClassName() {
-    return processorClassName;
-  }
+    @Override
+    public String getClassName() {
+        return processorClassName;
+    }
 }
