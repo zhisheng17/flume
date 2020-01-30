@@ -18,60 +18,56 @@
  */
 package org.apache.flume.api;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.flume.FlumeException;
 import org.apache.flume.util.SSLUtil;
 
+import java.util.*;
+
 public abstract class SSLContextAwareAbstractRpcClient extends AbstractRpcClient {
-  protected boolean enableSsl;
-  protected boolean trustAllCerts;
-  protected String truststore;
-  protected String truststorePassword;
-  protected String truststoreType;
-  protected final Set<String> excludeProtocols = new LinkedHashSet<>(Arrays.asList("SSLv3"));
-  protected final Set<String> includeProtocols = new LinkedHashSet<>();
-  protected final Set<String> excludeCipherSuites = new LinkedHashSet<>();
-  protected final Set<String> includeCipherSuites = new LinkedHashSet<>();
+    protected boolean enableSsl;
+    protected boolean trustAllCerts;
+    protected String truststore;
+    protected String truststorePassword;
+    protected String truststoreType;
+    protected final Set<String> excludeProtocols = new LinkedHashSet<>(Collections.singletonList("SSLv3"));
+    protected final Set<String> includeProtocols = new LinkedHashSet<>();
+    protected final Set<String> excludeCipherSuites = new LinkedHashSet<>();
+    protected final Set<String> includeCipherSuites = new LinkedHashSet<>();
 
-  protected void configureSSL(Properties properties) throws FlumeException {
-    enableSsl = Boolean.parseBoolean(properties.getProperty(
-      RpcClientConfigurationConstants.CONFIG_SSL));
-    trustAllCerts = Boolean.parseBoolean(properties.getProperty(
-      RpcClientConfigurationConstants.CONFIG_TRUST_ALL_CERTS));
-    truststore = properties.getProperty(
-      RpcClientConfigurationConstants.CONFIG_TRUSTSTORE, SSLUtil.getGlobalTruststorePath());
-    truststorePassword = properties.getProperty(
-      RpcClientConfigurationConstants.CONFIG_TRUSTSTORE_PASSWORD,
-      SSLUtil.getGlobalTruststorePassword());
-    truststoreType = properties.getProperty(
-      RpcClientConfigurationConstants.CONFIG_TRUSTSTORE_TYPE,
-      SSLUtil.getGlobalTruststoreType("JKS"));
-    parseList(properties.getProperty(
-        RpcClientConfigurationConstants.CONFIG_EXCLUDE_PROTOCOLS,
-        SSLUtil.getGlobalExcludeProtocols()),
-        excludeProtocols);
-    parseList(properties.getProperty(
-        RpcClientConfigurationConstants.CONFIG_INCLUDE_PROTOCOLS,
-        SSLUtil.getGlobalIncludeProtocols()),
-        includeProtocols);
-    parseList(properties.getProperty(
-        RpcClientConfigurationConstants.CONFIG_EXCLUDE_CIPHER_SUITES,
-        SSLUtil.getGlobalExcludeCipherSuites()),
-        excludeCipherSuites);
-    parseList(properties.getProperty(
-        RpcClientConfigurationConstants.CONFIG_INCLUDE_CIPHER_SUITES,
-        SSLUtil.getGlobalIncludeCipherSuites()),
-        includeCipherSuites);
-  }
-
-  private void parseList(String value, Set<String> set) {
-    if (Objects.nonNull(value)) {
-      set.addAll(Arrays.asList(value.split(" ")));
+    protected void configureSSL(Properties properties) throws FlumeException {
+        enableSsl = Boolean.parseBoolean(properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_SSL));
+        trustAllCerts = Boolean.parseBoolean(properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_TRUST_ALL_CERTS));
+        truststore = properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_TRUSTSTORE, SSLUtil.getGlobalTruststorePath());
+        truststorePassword = properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_TRUSTSTORE_PASSWORD,
+                SSLUtil.getGlobalTruststorePassword());
+        truststoreType = properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_TRUSTSTORE_TYPE,
+                SSLUtil.getGlobalTruststoreType("JKS"));
+        parseList(properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_EXCLUDE_PROTOCOLS,
+                SSLUtil.getGlobalExcludeProtocols()),
+                excludeProtocols);
+        parseList(properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_INCLUDE_PROTOCOLS,
+                SSLUtil.getGlobalIncludeProtocols()),
+                includeProtocols);
+        parseList(properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_EXCLUDE_CIPHER_SUITES,
+                SSLUtil.getGlobalExcludeCipherSuites()),
+                excludeCipherSuites);
+        parseList(properties.getProperty(
+                RpcClientConfigurationConstants.CONFIG_INCLUDE_CIPHER_SUITES,
+                SSLUtil.getGlobalIncludeCipherSuites()),
+                includeCipherSuites);
     }
-  }
+
+    private void parseList(String value, Set<String> set) {
+        if (Objects.nonNull(value)) {
+            set.addAll(Arrays.asList(value.split(" ")));
+        }
+    }
 }
