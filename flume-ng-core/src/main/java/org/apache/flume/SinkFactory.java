@@ -20,9 +20,7 @@
 package org.apache.flume;
 
 public interface SinkFactory {
-  Sink create(String name, String type)
-      throws FlumeException;
+    Sink create(String name, String type) throws FlumeException;
 
-  Class<? extends Sink> getClass(String type)
-      throws FlumeException;
+    Class<? extends Sink> getClass(String type) throws FlumeException;
 }

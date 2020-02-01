@@ -16,10 +16,10 @@ package org.apache.flume.source.shaded.guava;
  * limitations under the License.
  */
 
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.Math.min;
 import static java.util.concurrent.TimeUnit.SECONDS;
-
-import java.util.concurrent.TimeUnit;
 
 abstract class SmoothRateLimiter extends RateLimiter {
   /*

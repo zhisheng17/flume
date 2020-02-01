@@ -20,16 +20,13 @@ package org.apache.flume.instrumentation.util;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.util.Map;
 import java.util.Set;
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.MBeanAttributeInfo;
-import javax.management.MBeanServer;
-import javax.management.ObjectInstance;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *

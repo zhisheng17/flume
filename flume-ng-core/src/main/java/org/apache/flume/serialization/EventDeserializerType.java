@@ -24,18 +24,19 @@ import org.apache.flume.annotations.InterfaceStability;
 @InterfaceAudience.Private
 @InterfaceStability.Unstable
 public enum EventDeserializerType {
-  LINE(LineDeserializer.Builder.class),
-  AVRO(AvroEventDeserializer.Builder.class),
-  OTHER(null);
 
-  private final Class<? extends EventDeserializer.Builder> builderClass;
+    LINE(LineDeserializer.Builder.class),
+    AVRO(AvroEventDeserializer.Builder.class),
+    OTHER(null);
 
-  EventDeserializerType(Class<? extends EventDeserializer.Builder> builderClass) {
-    this.builderClass = builderClass;
-  }
+    private final Class<? extends EventDeserializer.Builder> builderClass;
 
-  public Class<? extends EventDeserializer.Builder> getBuilderClass() {
-    return builderClass;
-  }
+    EventDeserializerType(Class<? extends EventDeserializer.Builder> builderClass) {
+        this.builderClass = builderClass;
+    }
+
+    public Class<? extends EventDeserializer.Builder> getBuilderClass() {
+        return builderClass;
+    }
 
 }

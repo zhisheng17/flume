@@ -16,20 +16,19 @@ package org.apache.flume.source.shaded.guava;
  */
 
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.lang.Math.max;
-import static java.util.concurrent.TimeUnit.MICROSECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.flume.source.shaded.guava.SmoothRateLimiter.SmoothBursty;
 import org.apache.flume.source.shaded.guava.SmoothRateLimiter.SmoothWarmingUp;
 
+import javax.annotation.concurrent.ThreadSafe;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.concurrent.ThreadSafe;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Math.max;
+import static java.util.concurrent.TimeUnit.MICROSECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * A rate limiter. Conceptually, a rate limiter distributes permits at a

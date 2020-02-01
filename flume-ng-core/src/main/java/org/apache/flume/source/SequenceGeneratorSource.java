@@ -20,11 +20,7 @@
 package org.apache.flume.source;
 
 import com.google.common.base.Preconditions;
-import org.apache.flume.ChannelException;
-import org.apache.flume.Context;
-import org.apache.flume.Event;
-import org.apache.flume.EventDeliveryException;
-import org.apache.flume.FlumeException;
+import org.apache.flume.*;
 import org.apache.flume.conf.BatchSizeSupported;
 import org.apache.flume.conf.Configurable;
 import org.apache.flume.event.EventBuilder;
@@ -38,86 +34,85 @@ import java.util.List;
 public class SequenceGeneratorSource extends AbstractPollableSource implements
         Configurable, BatchSizeSupported {
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(SequenceGeneratorSource.class);
+    private static final Logger logger = LoggerFactory.getLogger(SequenceGeneratorSource.class);
 
-  private int batchSize;
-  private SourceCounter sourceCounter;
-  private long totalEvents;
-  private long eventsSent = 0;
+    private int batchSize;
+    private SourceCounter sourceCounter;
+    private long totalEvents;
+    private long eventsSent = 0;
 
-  /**
-   * Read parameters from context
-   * <li>batchSize = type int that defines the size of event batches
-   */
-  @Override
-  protected void doConfigure(Context context) throws FlumeException {
-    batchSize = context.getInteger("batchSize", 1);
-    totalEvents = context.getLong("totalEvents", Long.MAX_VALUE);
+    /**
+     * Read parameters from context
+     * <li>batchSize = type int that defines the size of event batches
+     */
+    @Override
+    protected void doConfigure(Context context) throws FlumeException {
+        batchSize = context.getInteger("batchSize", 1);
+        totalEvents = context.getLong("totalEvents", Long.MAX_VALUE);
 
-    Preconditions.checkArgument(batchSize > 0, "batchSize was %s but expected positive", batchSize);
-    if (sourceCounter == null) {
-      sourceCounter = new SourceCounter(getName());
-    }
-  }
-
-  @Override
-  protected Status doProcess() throws EventDeliveryException {
-    Status status = Status.READY;
-    long eventsSentTX = eventsSent;
-    try {
-      if (batchSize == 1) {
-        if (eventsSentTX < totalEvents) {
-          getChannelProcessor().processEvent(
-                  EventBuilder.withBody(String.valueOf(eventsSentTX++).getBytes()));
-          sourceCounter.incrementEventAcceptedCount();
-        } else {
-          status = Status.BACKOFF;
+        Preconditions.checkArgument(batchSize > 0, "batchSize was %s but expected positive", batchSize);
+        if (sourceCounter == null) {
+            sourceCounter = new SourceCounter(getName());
         }
-      } else {
-        List<Event> batchArrayList = new ArrayList<>(batchSize);
-        for (int i = 0; i < batchSize; i++) {
-          if (eventsSentTX < totalEvents) {
-            batchArrayList.add(i, EventBuilder.withBody(String
-                    .valueOf(eventsSentTX++).getBytes()));
-          } else {
-            status = Status.BACKOFF;
-            break;
-          }
-        }
-        if (!batchArrayList.isEmpty()) {
-          getChannelProcessor().processEventBatch(batchArrayList);
-          sourceCounter.incrementAppendBatchAcceptedCount();
-          sourceCounter.addToEventAcceptedCount(batchArrayList.size());
-        }
-      }
-      eventsSent = eventsSentTX;
-    } catch (ChannelException ex) {
-      logger.error( getName() + " source could not write to channel.", ex);
-      sourceCounter.incrementChannelWriteFail();
     }
 
-    return status;
-  }
+    @Override
+    protected Status doProcess() throws EventDeliveryException {
+        Status status = Status.READY;
+        long eventsSentTX = eventsSent;
+        try {
+            if (batchSize == 1) {
+                if (eventsSentTX < totalEvents) {
+                    getChannelProcessor().processEvent(
+                            EventBuilder.withBody(String.valueOf(eventsSentTX++).getBytes()));
+                    sourceCounter.incrementEventAcceptedCount();
+                } else {
+                    status = Status.BACKOFF;
+                }
+            } else {
+                List<Event> batchArrayList = new ArrayList<>(batchSize);
+                for (int i = 0; i < batchSize; i++) {
+                    if (eventsSentTX < totalEvents) {
+                        batchArrayList.add(i, EventBuilder.withBody(String
+                                .valueOf(eventsSentTX++).getBytes()));
+                    } else {
+                        status = Status.BACKOFF;
+                        break;
+                    }
+                }
+                if (!batchArrayList.isEmpty()) {
+                    getChannelProcessor().processEventBatch(batchArrayList);
+                    sourceCounter.incrementAppendBatchAcceptedCount();
+                    sourceCounter.addToEventAcceptedCount(batchArrayList.size());
+                }
+            }
+            eventsSent = eventsSentTX;
+        } catch (ChannelException ex) {
+            logger.error(getName() + " source could not write to channel.", ex);
+            sourceCounter.incrementChannelWriteFail();
+        }
 
-  @Override
-  protected void doStart() throws FlumeException {
-    logger.info("Sequence generator source do starting");
-    sourceCounter.start();
-    logger.debug("Sequence generator source do started");
-  }
+        return status;
+    }
 
-  @Override
-  protected void doStop() throws FlumeException {
-    logger.info("Sequence generator source do stopping");
+    @Override
+    protected void doStart() throws FlumeException {
+        logger.info("Sequence generator source do starting");
+        sourceCounter.start();
+        logger.debug("Sequence generator source do started");
+    }
 
-    sourceCounter.stop();
+    @Override
+    protected void doStop() throws FlumeException {
+        logger.info("Sequence generator source do stopping");
 
-    logger.info("Sequence generator source do stopped. Metrics:{}",getName(), sourceCounter);
-  }
+        sourceCounter.stop();
 
-  @Override
-  public long getBatchSize() {
-    return batchSize;
-  }
+        logger.info("Sequence generator source do stopped. Metrics:{}", getName(), sourceCounter);
+    }
+
+    @Override
+    public long getBatchSize() {
+        return batchSize;
+    }
 }

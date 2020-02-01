@@ -16,19 +16,12 @@ package org.apache.flume.source.shaded.guava;
  * limitations under the License.
  */
 
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
-
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
+
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * Utilities for treating interruptible operations as uninterruptible.

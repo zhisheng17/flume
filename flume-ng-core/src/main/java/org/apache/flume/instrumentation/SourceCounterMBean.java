@@ -17,6 +17,7 @@
  * under the License.
  */
 package org.apache.flume.instrumentation;
+
 /**
  * This interface represents a source counter mbean. Any class implementing
  * this interface must sub-class
@@ -26,30 +27,30 @@ package org.apache.flume.instrumentation;
  */
 public interface SourceCounterMBean {
 
-  long getEventReceivedCount();
+    long getEventReceivedCount();
 
-  long getEventAcceptedCount();
+    long getEventAcceptedCount();
 
-  long getAppendReceivedCount();
+    long getAppendReceivedCount();
 
-  long getAppendAcceptedCount();
+    long getAppendAcceptedCount();
 
-  long getAppendBatchReceivedCount();
+    long getAppendBatchReceivedCount();
 
-  long getAppendBatchAcceptedCount();
+    long getAppendBatchAcceptedCount();
 
-  long getStartTime();
+    long getStartTime();
 
-  long getStopTime();
+    long getStopTime();
 
-  String getType();
+    String getType();
 
-  long getOpenConnectionCount();
+    long getOpenConnectionCount();
 
-  long getEventReadFail();
+    long getEventReadFail();
 
-  long getChannelWriteFail();
+    long getChannelWriteFail();
 
-  long getGenericProcessingFail();
+    long getGenericProcessingFail();
 
 }

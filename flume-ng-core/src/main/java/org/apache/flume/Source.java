@@ -47,16 +47,16 @@ import org.apache.flume.lifecycle.LifecycleAware;
 @InterfaceStability.Stable
 public interface Source extends LifecycleAware, NamedComponent {
 
-  /**
-   * Specifies which channel processor will handle this source's events.
-   *
-   * @param channelProcessor
-   */
-  public void setChannelProcessor(ChannelProcessor channelProcessor);
+    /**
+     * Specifies which channel processor will handle this source's events.
+     *
+     * @param channelProcessor
+     */
+    void setChannelProcessor(ChannelProcessor channelProcessor);
 
-  /**
-   * Returns the channel processor that will handle this source's events.
-   */
-  public ChannelProcessor getChannelProcessor();
+    /**
+     * Returns the channel processor that will handle this source's events.
+     */
+    ChannelProcessor getChannelProcessor();
 
 }

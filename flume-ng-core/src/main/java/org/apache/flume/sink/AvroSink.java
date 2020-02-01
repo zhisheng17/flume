@@ -19,8 +19,6 @@
 
 package org.apache.flume.sink;
 
-import java.util.Properties;
-
 import org.apache.flume.Channel;
 import org.apache.flume.Sink;
 import org.apache.flume.api.RpcClient;
@@ -28,6 +26,8 @@ import org.apache.flume.api.RpcClientFactory;
 import org.apache.flume.source.AvroSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
 
 /**
  * <p>
@@ -106,11 +106,11 @@ import org.slf4j.LoggerFactory;
  */
 public class AvroSink extends AbstractRpcSink {
 
-  private static final Logger logger = LoggerFactory.getLogger(AvroSink.class);
+    private static final Logger logger = LoggerFactory.getLogger(AvroSink.class);
 
-  @Override
-  protected RpcClient initializeRpcClient(Properties props) {
-    logger.info("Attempting to create Avro Rpc client.");
-    return RpcClientFactory.getInstance(props);
-  }
+    @Override
+    protected RpcClient initializeRpcClient(Properties props) {
+        logger.info("Attempting to create Avro Rpc client.");
+        return RpcClientFactory.getInstance(props);
+    }
 }

@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,54 +17,52 @@
  */
 package org.apache.flume.sink;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.flume.Sink;
 import org.apache.flume.SinkProcessor;
 import org.apache.flume.lifecycle.LifecycleState;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A convenience base class for sink processors.
  */
 public abstract class AbstractSinkProcessor implements SinkProcessor {
 
-  private LifecycleState state;
+    private LifecycleState state;
 
-  // List of sinks as specified
-  private List<Sink> sinkList;
+    // List of sinks as specified
+    private List<Sink> sinkList;
 
-  @Override
-  public void start() {
-    for (Sink s : sinkList) {
-      s.start();
+    @Override
+    public void start() {
+        for (Sink s : sinkList) {
+            s.start();
+        }
+        state = LifecycleState.START;
     }
 
-    state = LifecycleState.START;
-  }
-
-  @Override
-  public void stop() {
-    for (Sink s : sinkList) {
-      s.stop();
+    @Override
+    public void stop() {
+        for (Sink s : sinkList) {
+            s.stop();
+        }
+        state = LifecycleState.STOP;
     }
-    state = LifecycleState.STOP;
-  }
 
-  @Override
-  public LifecycleState getLifecycleState() {
-    return state;
-  }
+    @Override
+    public LifecycleState getLifecycleState() {
+        return state;
+    }
 
-  @Override
-  public void setSinks(List<Sink> sinks) {
-    List<Sink> list = new ArrayList<Sink>();
-    list.addAll(sinks);
-    sinkList = Collections.unmodifiableList(list);
-  }
+    @Override
+    public void setSinks(List<Sink> sinks) {
+        List<Sink> list = new ArrayList<>(sinks);
+        sinkList = Collections.unmodifiableList(list);
+    }
 
-  protected List<Sink> getSinks() {
-    return sinkList;
-  }
+    protected List<Sink> getSinks() {
+        return sinkList;
+    }
 }
