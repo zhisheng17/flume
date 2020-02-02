@@ -53,8 +53,7 @@ public class EventBuilder {
         return withBody(body, null);
     }
 
-    public static Event withBody(String body, Charset charset,
-                                 Map<String, String> headers) {
+    public static Event withBody(String body, Charset charset, Map<String, String> headers) {
 
         return withBody(body.getBytes(charset), headers);
     }
