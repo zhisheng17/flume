@@ -18,18 +18,18 @@
  */
 package org.apache.flume.channel.file.encryption;
 
-import java.security.Key;
-
 import org.apache.flume.Context;
+
+import java.security.Key;
 
 public abstract class KeyProvider {
 
-  /**
-   * Returns a non-null Key
-   */
-  public abstract Key getKey(String alias);
+    /**
+     * Returns a non-null Key
+     */
+    public abstract Key getKey(String alias);
 
-  public interface Builder {
-    public abstract KeyProvider build(Context context);
-  }
+    public interface Builder {
+        public abstract KeyProvider build(Context context);
+    }
 }

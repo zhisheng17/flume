@@ -18,80 +18,75 @@
  */
 package org.apache.flume.channel.file;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
+import com.google.common.base.Preconditions;
 import org.apache.flume.channel.file.proto.ProtosFactory;
 
-import com.google.common.base.Preconditions;
+import java.io.*;
 
 /**
  * Represents a Commit on disk
  */
 class Commit extends TransactionEventRecord {
-  /**
-   * Type of Commit Take|Put
-   */
-  private short type;
+    /**
+     * Type of Commit Take|Put
+     */
+    private short type;
 
-  Commit(Long transactionID, Long logWriteOrderID) {
-    super(transactionID, logWriteOrderID);
-  }
+    Commit(Long transactionID, Long logWriteOrderID) {
+        super(transactionID, logWriteOrderID);
+    }
 
-  Commit(Long transactionID, Long logWriteOrderID, short type) {
-    this(transactionID, logWriteOrderID);
-    this.type = type;
-  }
+    Commit(Long transactionID, Long logWriteOrderID, short type) {
+        this(transactionID, logWriteOrderID);
+        this.type = type;
+    }
 
-  @Override
-  public void readFields(DataInput in) throws IOException {
-    super.readFields(in);
-    type = in.readShort();
-  }
+    @Override
+    public void readFields(DataInput in) throws IOException {
+        super.readFields(in);
+        type = in.readShort();
+    }
 
-  @Override
-  void writeProtos(OutputStream out) throws IOException {
-    ProtosFactory.Commit.Builder commitBuilder = ProtosFactory.Commit.newBuilder();
-    commitBuilder.setType(type);
-    commitBuilder.build().writeDelimitedTo(out);
-  }
+    @Override
+    void writeProtos(OutputStream out) throws IOException {
+        ProtosFactory.Commit.Builder commitBuilder = ProtosFactory.Commit.newBuilder();
+        commitBuilder.setType(type);
+        commitBuilder.build().writeDelimitedTo(out);
+    }
 
-  @Override
-  void readProtos(InputStream in) throws IOException {
-    ProtosFactory.Commit commit =
-        Preconditions.checkNotNull(ProtosFactory.Commit.parseDelimitedFrom(in),
-                                   "Commit cannot be null");
-    type = (short) commit.getType();
-  }
+    @Override
+    void readProtos(InputStream in) throws IOException {
+        ProtosFactory.Commit commit =
+                Preconditions.checkNotNull(ProtosFactory.Commit.parseDelimitedFrom(in),
+                        "Commit cannot be null");
+        type = (short) commit.getType();
+    }
 
-  short getType() {
-    return type;
-  }
+    short getType() {
+        return type;
+    }
 
-  @Override
-  public void write(DataOutput out) throws IOException {
-    super.write(out);
-    out.writeShort(type);
-  }
+    @Override
+    public void write(DataOutput out) throws IOException {
+        super.write(out);
+        out.writeShort(type);
+    }
 
-  @Override
-  short getRecordType() {
-    return Type.COMMIT.get();
-  }
+    @Override
+    short getRecordType() {
+        return Type.COMMIT.get();
+    }
 
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("Commit [type=");
-    builder.append(type);
-    builder.append(", getLogWriteOrderID()=");
-    builder.append(getLogWriteOrderID());
-    builder.append(", getTransactionID()=");
-    builder.append(getTransactionID());
-    builder.append("]");
-    return builder.toString();
-  }
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Commit [type=");
+        builder.append(type);
+        builder.append(", getLogWriteOrderID()=");
+        builder.append(getLogWriteOrderID());
+        builder.append(", getTransactionID()=");
+        builder.append(getTransactionID());
+        builder.append("]");
+        return builder.toString();
+    }
 }
